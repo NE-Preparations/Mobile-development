@@ -1,5 +1,4 @@
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -13,35 +12,73 @@ import BookFormScreen from "../screens/BookFormScreen";
 import BorrowingHistoryScreen from "../screens/BorrowingHistoryScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
-const Stack = createStackNavigator();
-const Tabs = createBottomTabNavigator();
+// Define param lists for all navigators
+export type RootStackParamList = {
+  Landing: undefined;
+  Login: undefined;
+  Register: undefined;
+  Dashboard: undefined;
+  Main: undefined;
+  BookDetails: undefined;
+  BookForm: undefined;
+};
 
+export type BooksStackParamList = {
+  BookList: undefined;
+  BookDetails: undefined;
+  BookForm: undefined;
+};
+
+export type MainTabParamList = {
+  Books: undefined;
+  History: undefined;
+  Profile: undefined;
+};
+
+// Create navigators with typed param lists
+const RootStack = createStackNavigator<RootStackParamList>();
+const BooksStack = createStackNavigator<BooksStackParamList>();
+const Tabs = createBottomTabNavigator<MainTabParamList>(); // Use Tabs, not Tab
+
+// BooksStack navigator (example)
+const BooksStackNavigator = () => (
+  <BooksStack.Navigator>
+    <BooksStack.Screen name="BookList" component={BookListScreen} />
+    <BooksStack.Screen name="BookDetails" component={BookDetailsScreen} />
+    <BooksStack.Screen name="BookForm" component={BookFormScreen} />
+  </BooksStack.Navigator>
+);
+
+// MainTabs navigator (already in your code, renamed Tab to Tabs)
 const MainTabs = () => (
   <Tabs.Navigator>
-    <Tabs.Screen name="Books" component={BookListScreen} />
+    <Tabs.Screen name="Books" component={BooksStackNavigator} /> {/* Use BooksStack here */}
     <Tabs.Screen name="History" component={BorrowingHistoryScreen} />
     <Tabs.Screen name="Profile" component={ProfileScreen} />
   </Tabs.Navigator>
 );
 
+// RootStack navigator (replaces Stack in your code)
 const AppNavigator = () => (
-  <Stack.Navigator initialRouteName="Landing">
-    <Stack.Screen
-      name="Landing"
-      component={LandingScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Register" component={RegisterScreen} />
-    <Stack.Screen name="Dashboard" component={DashboardScreen} />
-    <Stack.Screen
-      name="Main"
-      component={MainTabs}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen name="BookDetails" component={BookDetailsScreen} />
-    <Stack.Screen name="BookForm" component={BookFormScreen} />
-  </Stack.Navigator>
+  <NavigationContainer>
+    <RootStack.Navigator initialRouteName="Landing">
+      <RootStack.Screen
+        name="Landing"
+        component={LandingScreen}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name="Login" component={LoginScreen} />
+      <RootStack.Screen name="Register" component={RegisterScreen} />
+      <RootStack.Screen name="Dashboard" component={DashboardScreen} />
+      <RootStack.Screen
+        name="Main"
+        component={MainTabs}
+        options={{ headerShown: false }}
+      />
+      <RootStack.Screen name="BookDetails" component={BookDetailsScreen} />
+      <RootStack.Screen name="BookForm" component={BookFormScreen} />
+    </RootStack.Navigator>
+  </NavigationContainer>
 );
 
 export default AppNavigator;
