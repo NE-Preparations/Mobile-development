@@ -63,6 +63,30 @@ export default function LoginScreen() {
       />
       {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
+      <Button title="Go to Register" onPress={() => navigation.navigate('Register')} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center'
+    },
+    title: {
+        fontSize: 24,
+        marginBottom: 20,
+        textAlign: 'center'
+    },
+    input: {
+        borderWidth: 1,
+        padding: 10,
+        marginVertical: 10,
+        borderRadius: 5
+    },
+    error: {
+        color: 'red',
+        marginBottom: 10
+    }
+});
