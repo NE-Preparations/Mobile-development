@@ -1,7 +1,8 @@
 import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabsNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LandingScreen from "../screens/LandingScreen";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
@@ -13,7 +14,7 @@ import BorrowingHistoryScreen from "../screens/BorrowingHistoryScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
 const Stack = createStackNavigator();
-const Tabs = createBottomTabsNavigator();
+const Tabs = createBottomTabNavigator();
 
 const MainTabs = () => (
   <Tabs.Navigator>
