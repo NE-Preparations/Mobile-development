@@ -1,193 +1,329 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
-import * as authService from "../services/authService";
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import { router } from 'expo-router';
+import { 
+  User, 
+  AuthState, 
+  LoginCredentials, 
+  RegisterCredentials, 
+  PasswordChange,
+  ProfileUpdate
+} from '../types/index';
+import api from '../services/api';
+import { Toast } from 'react-native-toast-message';
 
-export enum UserRole {
-  STUDENT = "STUDENT",
-  LIBRARIAN = "LIBRARIAN",
-}
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-}
-
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  isLoading: boolean;
-  error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (
-    name: string,
-    email: string,
-    password: string,
-    role: UserRole
-  ) => Promise<void>;
+interface AuthContextType extends AuthState {
+  login: (credentials: LoginCredentials) => Promise<void>;
+  register: (credentials: RegisterCredentials) => Promise<void>;
   logout: () => Promise<void>;
-  updateProfile: (userData: { name: string; email: string }) => Promise<void>;
-  changePassword: (
-    currentPassword: string,
-    newPassword: string
-  ) => Promise<void>;
-  clearError: () => void;
+  changePassword: (passwordData: PasswordChange) => Promise<void>;
+  updateProfile: (profileData: ProfileUpdate) => Promise<void>;
+  checkAuthStatus: () => Promise<boolean>;
 }
 
-const AuthContext = createContext<AuthState | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+  isAuthenticated: false,
+  user: null,
+  loading: true,
+  error: null,
+  login: async () => {},
+  register: async () => {},
+  logout: async () => {},
+  changePassword: async () => {},
+  updateProfile: async () => {},
+  checkAuthStatus: async () => false,
+});
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [authState, setAuthState] = useState<AuthState>({
+    isAuthenticated: false,
+    user: null,
+    loading: true,
+    error: null,
+  });
+
+  // Check if the user is already logged in when the app loads
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const storedToken = await AsyncStorage.getItem("token");
-
-        if (storedToken) {
-          const userData = await authService.getCurrentUser(storedToken);
-          setUser(userData);
-          setToken(storedToken);
-        }
-      } catch (err) {
-        console.log("Failed to load user:", err);
+        await checkAuthStatus();
+      } catch (error) {
+        console.error('Error loading user:', error);
       } finally {
-        setIsLoading(false);
+        setAuthState(current => ({ ...current, loading: false }));
       }
     };
+
     loadUser();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-
+  // Function to check authentication status
+  const checkAuthStatus = async (): Promise<boolean> => {
     try {
-      const { token: newToken, user: userData } = await authService.login(
-        email,
-        password
-      );
+      const token = await SecureStore.getItemAsync('authToken');
+      
+      if (!token) {
+        setAuthState({
+          isAuthenticated: false,
+          user: null,
+          loading: false,
+          error: null,
+        });
+        return false;
+      }
 
-      await AsyncStorage.setItem("token", newToken);
-
-      setToken(newToken);
-      setUser(userData);
-
-      router.replace("/(auth)/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed. Please check your credentials.");
-    } finally {
-      setIsLoading(false);
+      // Fetch the current user
+      const response = await api.get('/users/me');
+      
+      if (response.data && response.data.data) {
+        setAuthState({
+          isAuthenticated: true,
+          user: response.data.data,
+          loading: false,
+          error: null,
+        });
+        return true;
+      } else {
+        throw new Error('Failed to get user data');
+      }
+    } catch (error) {
+      console.error('Auth status check error:', error);
+      await SecureStore.deleteItemAsync('authToken');
+      setAuthState({
+        isAuthenticated: false,
+        user: null,
+        loading: false,
+        error: 'Authentication failed',
+      });
+      return false;
     }
   };
 
-
-const register = async (name: string, email: string, password: string, role: UserRole) => {
-    setIsLoading(true);
-    setError(null);
-
+  // Login function
+  const login = async (credentials: LoginCredentials) => {
     try {
-        const { token: newToken, user: userData } = await authService.register(name, email, password, role);
-
-        await AsyncStorage.setItem('token', newToken);
-
-        setToken(newToken);
-        setUser(userData);
-
-        router.replace('/(auth)/dashboard');
-    } catch (err: any) {
-        setError(err.message || 'Registration failed. Please try again.');
-    } finally {
-        setIsLoading(false);
+      setAuthState(current => ({ ...current, loading: true, error: null }));
+      
+      const response = await api.post('/users/login', credentials);
+      
+      if (response.data && response.data.token) {
+        await SecureStore.setItemAsync('authToken', response.data.token);
+        
+        // Get user data
+        const userResponse = await api.get('/users/me');
+        
+        setAuthState({
+          isAuthenticated: true,
+          user: userResponse.data.data,
+          loading: false,
+          error: null,
+        });
+        
+        // Redirect to dashboard
+        router.replace('/dashboard');
+        
+        Toast.show({
+          type: 'success',
+          text1: 'Login Successful',
+          text2: `Welcome back, ${userResponse.data.data.name}!`,
+        });
+      }
+    } catch (error: any) {
+      console.error('Login error:', error.response?.data || error.message);
+      
+      setAuthState(current => ({
+        ...current,
+        loading: false,
+        error: error.response?.data?.message || 'Login failed. Please try again.',
+      }));
+      
+      Toast.show({
+        type: 'error',
+        text1: 'Login Failed',
+        text2: error.response?.data?.message || 'Please check your credentials and try again.',
+      });
     }
-};
+  };
 
-
-const logout = async () => {
+  // Register function
+  const register = async (credentials: RegisterCredentials) => {
     try {
-        await AsyncStorage.removeItem('token');
-
-        setToken(null);
-        setUser(null);
-
-        router.replace('/');
-    } catch(err) {
-        console.error('Logout error:', err);
+      setAuthState(current => ({ ...current, loading: true, error: null }));
+      
+      const response = await api.post('/users/register', credentials);
+      
+      if (response.data && response.data.token) {
+        await SecureStore.setItemAsync('authToken', response.data.token);
+        
+        // Get user data
+        const userResponse = await api.get('/users/me');
+        
+        setAuthState({
+          isAuthenticated: true,
+          user: userResponse.data.data,
+          loading: false,
+          error: null,
+        });
+        
+        // Redirect to dashboard
+        router.replace('/dashboard');
+        
+        Toast.show({
+          type: 'success',
+          text1: 'Registration Successful',
+          text2: `Welcome, ${userResponse.data.data.name}!`,
+        });
+      }
+    } catch (error: any) {
+      console.error('Registration error:', error.response?.data || error.message);
+      
+      setAuthState(current => ({
+        ...current,
+        loading: false,
+        error: error.response?.data?.message || 'Registration failed. Please try again.',
+      }));
+      
+      Toast.show({
+        type: 'error',
+        text1: 'Registration Failed',
+        text2: error.response?.data?.message || 'Please check your information and try again.',
+      });
     }
-};
+  };
 
-
-
-const updateProfile = async (userData: {name: string, email: string}) => {
-    setIsLoading(true);
-    setError(null);
-
+  // Logout function
+  const logout = async () => {
     try {
-        if(!token) {
-            throw new Error('Not authenticated');
-        }
-
-        const updatedUser = await authService.updateProfile(token, userData);
-        setUser(updatedUser);
-    } catch(err: any) {
-        setError(err.message || 'Failed to update profile.');
-    } finally {
-        setIsLoading(false);
+      await SecureStore.deleteItemAsync('authToken');
+      
+      setAuthState({
+        isAuthenticated: false,
+        user: null,
+        loading: false,
+        error: null,
+      });
+      
+      // Redirect to landing page
+      router.replace('/');
+      
+      Toast.show({
+        type: 'success',
+        text1: 'Logged Out',
+        text2: 'You have been successfully logged out.',
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      
+      Toast.show({
+        type: 'error',
+        text1: 'Logout Failed',
+        text2: 'An error occurred during logout.',
+      });
     }
-};
+  };
 
-
-const changePassword = async (currentPassword: string, newPassword: string) => {
-    setIsLoading(true);
-    setError(null);
-    
+  // Change password function
+  const changePassword = async (passwordData: PasswordChange) => {
     try {
-      if (!token) {
-        throw new Error('Not authenticated');
+      setAuthState(current => ({ ...current, loading: true, error: null }));
+      
+      if (passwordData.newPassword !== passwordData.confirmPassword) {
+        throw new Error('New passwords do not match');
       }
       
-      await authService.changePassword(token, currentPassword, newPassword);
-    } catch (err: any) {
-      setError(err.message || 'Failed to change password.');
-    } finally {
-      setIsLoading(false);
+      const response = await api.put('/users/change-password', {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+      
+      setAuthState(current => ({ ...current, loading: false }));
+      
+      Toast.show({
+        type: 'success',
+        text1: 'Password Changed',
+        text2: 'Your password has been updated successfully.',
+      });
+      
+      return response.data;
+    } catch (error: any) {
+      console.error('Change password error:', error.response?.data || error.message);
+      
+      setAuthState(current => ({
+        ...current,
+        loading: false,
+        error: error.response?.data?.message || 'Password change failed.',
+      }));
+      
+      Toast.show({
+        type: 'error',
+        text1: 'Password Change Failed',
+        text2: error.response?.data?.message || 'Please check your current password and try again.',
+      });
+      
+      throw error;
     }
   };
 
-  // Clear error function
-  const clearError = () => setError(null);
+  // Update profile function
+  const updateProfile = async (profileData: ProfileUpdate) => {
+    try {
+      setAuthState(current => ({ ...current, loading: true, error: null }));
+      
+      const response = await api.put('/users/update-profile', profileData);
+      
+      if (response.data && response.data.data) {
+        setAuthState(current => ({
+          ...current,
+          loading: false,
+          user: response.data.data,
+        }));
+        
+        Toast.show({
+          type: 'success',
+          text1: 'Profile Updated',
+          text2: 'Your profile has been updated successfully.',
+        });
+      }
+      
+      return response.data;
+    } catch (error: any) {
+      console.error('Update profile error:', error.response?.data || error.message);
+      
+      setAuthState(current => ({
+        ...current,
+        loading: false,
+        error: error.response?.data?.message || 'Profile update failed.',
+      }));
+      
+      Toast.show({
+        type: 'error',
+        text1: 'Profile Update Failed',
+        text2: error.response?.data?.message || 'Please try again.',
+      });
+      
+      throw error;
+    }
+  };
 
-  // Context value
-  const value = {
-    user,
-    token,
-    isLoading,
-    error,
+  const contextValue = {
+    ...authState,
     login,
     register,
     logout,
-    updateProfile,
     changePassword,
-    clearError
+    updateProfile,
+    checkAuthStatus,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  
-  return context;
-
-};
+// Custom hook to use the auth context
+export const useAuth = () => useContext(AuthContext);

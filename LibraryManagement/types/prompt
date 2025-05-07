@@ -1,0 +1,146 @@
+We are surfacing the project from scratch with some new yet effective directives changes:
+Hello! I'm a high school student preparing for my final Mobile App Development practical exam, and I urgently need structured help. The passing criteria is strict—scoring below 80% leads to disqualification, and this is a high-stakes, high school–ending exam.
+
+The exam project involves building a Library Management Mobile App using React Native for the frontend (which I've never used before) and a Node.js + Express backend written in TypeScript (already provided or generated).
+
+I'm requesting a detailed, step-by-step guide covering the complete app development process—from project setup to deployment, explaining each stage clearly. Please break the content into the main stages of mobile app development, such as:
+
+✅ 1. Project Setup
+How to set up the React Native development environment
+
+Tools required (Expo, Toast, React-context, Tailwind)
+
+Folder structure suggestion
+
+Connecting the app to the provided Node.js backend (API base URL setup, environment variables)
+
+✅ 2. App Structure and Navigation
+How to use navigation libraries (e.g., Expo router Navigation)
+
+Suggested screen flow :
+for STUDENT:(Landing Page ➝ Login/Register ➝ Dashboard ➝ Book Lists ➝ Book Details ➝ Borrow Book(if available)  ➝ my Borrowed Book Dashboard  ➝ Return Book (so that it becomes available again)➝   Profile(for current profile, change-password and others) ➝ Logout  ➝ Landing Page(with Login and Signup buttons))
+
+for LIBRARIAN:(Landing Page ➝ Login/Register ➝ Dashboard(Books, Borrowed and Unborrowed tags, Sorted and  pagination) ➝ Book Lists ➝ Book Details ➝ Update/Create Book ➝   Profile(for current profile, change-password, role and others) ➝ Logout  ➝ Landing Page(with Login and Signup buttons))
+
+Navigation types: Expo-router (with recommendations)
+
+✅ 3. Authentication Module
+Implementing secure login, register, change-password, Protecting screens, role-based authorization and logout
+
+React-context state management
+Token storage (AsyncStorage) and handling expired sessions
+
+I need also the role based authorization for Student and Librarian/Teacher, each with what they are authorized to do and then what they have in common and so on
+
+User role consideration
+
+✅ 4. UI and UX Best Practices
+Designing a clean landing page and consistent UI
+
+Suggested libraries for styling (e.g., Tailwind RN, and custom styles)
+and don't forget bottom tabs/bottom navigation
+Responsive layout tips and accessibility notes
+
+✅ 5. CRUD Functionalities (Library Management)
+How to fetch, create, update, and delete:
+
+Books
+
+Categories/Genres
+
+Authors (optional)
+
+Axios or Fetch setup for API calls
+
+Form handling and validation (e.g., using React Hook Form + Zod)
+
+✅ 6. State Management
+State options (React useState, Context API, React-context)
+
+Best practices for managing global user state (e.g., after login)
+
+✅ 7. Backend Integration
+How to connect with the provided Node.js + Express backend in TypeScript
+
+Authentication token flow (JWT) between frontend and backend
+
+API call structure and error handling
+
+✅ 8. Testing and Debugging
+How to test functionality before submission
+
+Basic error messages, loading indicators, and edge case handling
+
+Tools for debugging (React Native Debugger, console logs)
+
+✅ 9. Final Touches and Deployment
+Preparing the app for submission ( Expo build)
+
+Clean code checklist
+
+How to document features for the examiner (e.g., README, comments, demo guide)
+
+💡 Additional Info and Suggestions Welcome:
+
+You may add features that enhance the project (e.g., book borrowing history, user profile, favorite books)
+
+Tips for performance, exam-focused shortcuts, or must-do features to meet the exam standards
+
+Highlight common beginner mistakes in React Native and how to avoid them
+
+🆘 Please keep in mind that:
+
+if you have the suggested changes that can make the project content and codes easily understandable instead of my suggested changes, you can add them, am new to this and want to real so that when asked to explain I can easily do that
+
+I'm new to React Native, so all explanations should be clear, beginner-friendly, and practical.
+
+My goal is to template for the exam and avoid disqualification by scoring above 80%.
+
+Thank you in advance!
+
+PLEASE BUILD THE FULL PROJECT, You can explain where it's somehow complex but full project template is required
+
+But we need to craft the backend first so that we can be able to carry out our frontend work easily and clearly
+
+
+SO, I've crafted the backend, with these models:
+user model and book model,
+the user model consists of name, email, password and ROLE fields
+the book model comprises: title; author; category; ISBN; publicationYear; available; description; coverImage?; borrowedBy?; borrowDate?; returnDate?;
+
+and these routes:
+router.post('/register', register); router.post('/login', login); // Protected routes router.get('/me', auth, getCurrentUser); router.put('/update-profile', auth, updateProfile); router.put('/change-password', auth, changePassword);
+
+router.get('/', getAllBooks); router.get('/search', searchBooks); router.get('/category/:category', filterBooksByCategory); router.get('/:id', getBookById); // Student routes router.get('/user/borrowed', auth, authorize([UserRole.STUDENT]), getBorrowedBooks); router.put('/:id/borrow', auth, authorize([UserRole.STUDENT]), borrowBook); router.put('/:id/return', auth, authorize([UserRole.STUDENT]), returnBook); // Librarian routes router.post('/', auth, authorize([UserRole.LIBRARIAN]), createBook); router.put('/:id', auth, authorize([UserRole.LIBRARIAN]), updateBook); router.delete('/:id', auth, authorize([UserRole.LIBRARIAN]), deleteBook);
+
+So, the fileStructure for that frontend is(use expo-router not stack navigation):
+library-management-app/
+├── app/                     # Main app directory for Expo Router
+│   ├── _layout.tsx          # Root layout
+│   ├── index.tsx            # Landing page
+│   ├── login.tsx            # Login screen
+│   ├── register.tsx         # Register screen
+│   ├── (auth)/              # Protected routes
+│   │   ├── _layout.tsx      # Layout for authenticated users
+│   │   ├── dashboard.tsx    # Dashboard
+│   │   ├── books/           # Books related screens
+│   │   │   ├── index.tsx    # Book list
+│   │   │   ├── [id].tsx     # Book details
+│   │   │   └── create.tsx   # Create/update book (librarian only)
+│   │   ├── borrowed.tsx     # Borrowed books (student)
+│   │   └── profile.tsx      # User profile
+├── components/              # Reusable components
+│   ├── BookCard.tsx         # Book card component
+│   ├── BookForm.tsx         # Book form for create/update
+│   ├── Button.tsx           # Custom button component
+│   └── ...
+├── context/                 # React Context
+│   └── AuthContext.tsx      # Authentication context
+├── services/                # API services
+│   ├── api.ts               # API config
+│   ├── authService.ts       # Auth related API calls
+│   └── bookService.ts       # Book related API calls
+├── types/                   # TypeScript types
+│   └── index.ts             # Type definitions
+└── utils/                   # Utility functions
+    └── index.ts             # Helper functions
