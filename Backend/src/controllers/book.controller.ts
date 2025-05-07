@@ -159,3 +159,44 @@ export const borrowBook = async (req: Request, res: Response) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+export const returnBook = async (req: Request, res: Response) => {
+    try {
+        const bookId = req.params.id;
+        const userId = req.user.id;
+
+        const book = await Book.findById(bookId);
+        if(!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+
+        if (book.available || !book.borrowedBy || book.borrowedBy.toString() !== userId) {
+            return res.status(400).json({ message: 'You have not borrowed this book' });
+        }
+
+        book.available = true;
+        book.borrowedBy = undefined;
+        book.borrowDate = undefined;
+        book.returnDate = undefined;
+
+        await book.save();
+
+        res.status(200).json({ message: 'Book returned successfully', book });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const getBorrowedBooks = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user.id;
+
+        const books = await Book.find({ borrowedBy: userId }).populate('borrowedBy', 'name email');
+
+        res.status(200).json(books);
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
