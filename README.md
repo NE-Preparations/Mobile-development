@@ -8,7 +8,7 @@ Content for React-native mobile app development
 npm install -g expo-cli
 
 # Create a new project
-npx create-expo-app LibraryManagement
+npx create-expo-app LibraryManagement -t expo-router
 cd LibraryManagement
 
 # Install required dependencies
