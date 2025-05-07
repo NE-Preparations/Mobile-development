@@ -1,0 +1,259 @@
+{
+    "products": [
+      {
+        "id": "1",
+        "name": "Wireless Noise-Canceling Headphones",
+        "type": "Electronics",
+        "cover_image": "headphones.jpg",
+        "details": "Experience immersive sound with these premium over-ear headphones. Features include active noise cancellation, 40-hour battery life, Bluetooth 5.3 connectivity, and customizable EQ settings. The plush memory foam ear cushions ensure comfort for extended use, and the built-in microphone supports crystal-clear voice calls. Compatible with iOS, Android, and desktop devices.",
+        "producer": "SoundWave Tech",
+        "price": 249.99,
+        "publisher_email": "support@soundwavetech.com",
+        "rating": 4.7,
+        "comments": [
+          {
+            "user": "musiclover2024",
+            "comment": "Best headphones I've ever owned! The noise cancellation is unreal.",
+            "date": "2024-03-15"
+          },
+          {
+            "user": "techie99",
+            "comment": "Battery life lasts forever. Worth every penny.",
+            "date": "2024-04-02"
+          }
+        ],
+        "release_date": "2023-12-10"
+      },
+      {
+        "id": "2",
+        "name": "Smart Fitness Watch",
+        "type": "Wearables",
+        "cover_image": "smartwatch.jpg",
+        "details": "Track your fitness goals with precision using this advanced smartwatch. Features include heart rate monitoring, sleep tracking, GPS, and water resistance up to 50 meters. The bright AMOLED display offers clear visibility even in direct sunlight, and the battery lasts up to 7 days on a single charge. Compatible with both Android and iOS devices.",
+        "producer": "FitTech",
+        "price": 199.99,
+        "publisher_email": "support@fittech.com",
+        "rating": 4.5,
+        "comments": [
+          {
+            "user": "runner23",
+            "comment": "The GPS tracking is incredibly accurate. Perfect for my marathon training!",
+            "date": "2024-02-20"
+          },
+          {
+            "user": "healthnut",
+            "comment": "Sleep tracking feature has helped me improve my rest patterns.",
+            "date": "2024-03-10"
+          }
+        ],
+        "release_date": "2024-01-15"
+      },
+      {
+        "id": "3",
+        "name": "Portable Bluetooth Speaker",
+        "type": "Audio",
+        "cover_image": "speaker.jpg",
+        "details": "Take your music anywhere with this compact yet powerful Bluetooth speaker. Features include 360° sound, waterproof design (IPX7 rated), 16-hour battery life, and integrated voice assistant support. The rugged exterior protects against drops and impacts, making it perfect for outdoor adventures. Pairs easily with all Bluetooth-enabled devices.",
+        "producer": "AudioPeak",
+        "price": 129.99,
+        "publisher_email": "info@audiopeak.com",
+        "rating": 4.8,
+        "comments": [
+          {
+            "user": "beachgoer",
+            "comment": "Survived a day at the beach with sand and water. Still works perfectly!",
+            "date": "2024-04-05"
+          },
+          {
+            "user": "partyplanner",
+            "comment": "Sound quality is amazing for such a small speaker. Great bass response.",
+            "date": "2024-03-22"
+          }
+        ],
+        "release_date": "2023-11-05"
+      },
+      {
+        "id": "4",
+        "name": "Wireless Noise-Canceling Headphones",
+        "type": "Electronics",
+        "cover_image": "https://via.placeholder.com/600x400?text=Wireless+Headphones",
+        "details": "Experience immersive sound with these premium over-ear headphones. Features include active noise cancellation, 40-hour battery life, Bluetooth 5.3 connectivity, and customizable EQ settings. The plush memory foam ear cushions ensure comfort for extended use, and the built-in microphone supports crystal-clear voice calls. Compatible with iOS, Android, and desktop devices.",
+        "producer": "SoundWave Tech",
+        "price": 249.99,
+        "publisher_email": "support@soundwavetech.com",
+        "rating": 4.7,
+        "comments": [
+          {
+            "user": "musiclover2024",
+            "comment": "Best headphones I’ve ever owned! The noise cancellation is unreal.",
+            "date": "2024-03-15"
+          },
+          {
+            "user": "techie99",
+            "comment": "Battery life lasts forever. Worth every penny.",
+            "date": "2024-04-02"
+          }
+        ],
+        "release_date": "2023-12-10"
+      },
+      {
+        "id": "5",
+        "name": "Organic Cotton T-Shirt (Pack of 3)",
+        "type": "Fashion",
+        "cover_image": "https://via.placeholder.com/600x400?text=Organic+Cotton+T-Shirt",
+        "details": "Made from 100% GOTS-certified organic cotton, these crew-neck t-shirts are breathable, hypoallergenic, and eco-friendly. Designed for a relaxed fit, they feature double-stitched seams for durability and a tagless label for comfort. Available in neutral tones and machine-washable without color fading. Perfect for everyday wear or layering.",
+        "producer": "EcoWear",
+        "price": 39.99,
+        "publisher_email": "sales@ecowear.com",
+        "rating": 4.4,
+        "comments": [
+          {
+            "user": "sustainable_fashionista",
+            "comment": "Soft fabric and true to size. Love the eco-friendly approach!",
+            "date": "2024-02-20"
+          }
+        ],
+        "release_date": "2024-01-05"
+      },
+      {
+        "id": "6",
+        "name": "Stainless Steel Air Fryer",
+        "type": "Home & Kitchen",
+        "cover_image": "https://via.placeholder.com/600x400?text=Air+Fryer",
+        "details": "Revolutionize your cooking with this 6-quart digital air fryer. Equipped with 7 preset functions (fries, chicken, fish, etc.), a 1700W rapid-air system, and a non-stick, dishwasher-safe basket. The LED touchscreen and adjustable temperature control (180°F to 400°F) make it easy to achieve crispy results with up to 80% less oil. Includes a recipe book for beginners.",
+        "producer": "KitchenPro",
+        "price": 129.95,
+        "publisher_email": "info@kitchenpro.com",
+        "rating": 4.6,
+        "comments": [
+          {
+            "user": "homechef_amy",
+            "comment": "Cooks evenly and saves so much time. My fries are perfectly crispy!",
+            "date": "2024-04-10"
+          }
+        ],
+        "release_date": "2023-11-25"
+      },
+      {
+        "id": "7",
+        "name": "Yoga Mat with Alignment Lines",
+        "type": "Fitness",
+        "cover_image": "https://via.placeholder.com/600x400?text=Yoga+Mat",
+        "details": "Ultra-thick (6mm) eco-friendly TPE yoga mat with non-slip texture and alignment markers for perfect poses. Lightweight and easy to clean, it includes a carrying strap and a free online yoga course access. Ideal for hot yoga, Pilates, or meditation. Dimensions: 72” x 24”.",
+        "producer": "ZenLife",
+        "price": 45.50,
+        "publisher_email": "contact@zenlife.com",
+        "rating": 4.8,
+        "comments": [],
+        "release_date": "2024-02-01"
+      },
+      {
+        "id": "8",
+        "name": "4K Action Camera",
+        "type": "Electronics",
+        "cover_image": "https://via.placeholder.com/600x400?text=4K+Action+Camera",
+        "details": "Capture adventures in stunning 4K/60fps resolution with this waterproof (up to 40m) action camera. Features include built-in Wi-Fi, voice control, electronic image stabilization, and a 2-inch touchscreen. Bundle includes 3 mounts, a spare battery, and a 128GB microSD card. Perfect for sports, travel, and vlogging.",
+        "producer": "AdventureGear",
+        "price": 299.00,
+        "publisher_email": "support@adventuregear.com",
+        "rating": 4.5,
+        "comments": [
+          {
+            "user": "travel_junkie",
+            "comment": "Incredible video quality even in low light. The stabilization is a game-changer!",
+            "date": "2024-03-30"
+          }
+        ],
+        "release_date": "2024-01-15"
+      },
+      {
+        "id": "9",
+        "name": "Smart LED Bulb #1",
+        "type": "Home & Kitchen",
+        "cover_image": "https://via.placeholder.com/600x400?text=Smart+LED+Bulb+1",
+        "details": "Brighten your room with this energy-efficient smart LED bulb. Features include adjustable brightness, color temperature control, and compatibility with voice assistants. Easily control lighting through a mobile app or voice commands.",
+        "producer": "BrightLite",
+        "price": 19.99,
+        "publisher_email": "info@brightlite.com",
+        "rating": 4.5,
+        "comments": [
+          {
+            "user": "reviewer123",
+            "comment": "Loved it!",
+            "date": "2024-03-10"
+          }
+        ],
+        "release_date": "2024-01-20"
+      },
+      {
+        "id": "10",
+        "name": "Ergonomic Office Chair #2",
+        "type": "Furniture",
+        "cover_image": "https://via.placeholder.com/600x400?text=Ergonomic+Office+Chair+2",
+        "details": "Designed for 8+ hour comfort, this ergonomic office chair features lumbar support, adjustable height, and breathable mesh fabric. Ideal for home offices and workspaces.",
+        "producer": "ChairEase",
+        "price": 149.99,
+        "publisher_email": "info@chairease.com",
+        "rating": 4.6,
+        "comments": [
+          {
+            "user": "dailyuser",
+            "comment": "Works great so far.",
+            "date": "2024-02-28"
+          }
+        ],
+        "release_date": "2024-02-15"
+      },
+      {
+        "id": "11",
+        "name": "Bluetooth Shower Speaker #3",
+        "type": "Electronics",
+        "cover_image": "https://via.placeholder.com/600x400?text=Bluetooth+Shower+Speaker+3",
+        "details": "Waterproof and durable, this Bluetooth shower speaker delivers high-quality sound even in wet environments. Features suction cup for easy mounting and up to 10 hours of playtime.",
+        "producer": "AquaTunes",
+        "price": 39.95,
+        "publisher_email": "info@aquatunes.com",
+        "rating": 4.3,
+        "comments": [
+          {
+            "user": "verified_buyer",
+            "comment": "Good value for money.",
+            "date": "2024-04-01"
+          }
+        ],
+        "release_date": "2024-03-05"
+      },
+      {
+        "id": "12",
+        "name": "Smartwatch with Health Tracker #4",
+        "type": "Electronics",
+        "cover_image": "https://via.placeholder.com/600x400?text=Smartwatch+with+Health+Tracker+4",
+        "details": "Track heart rate, steps, sleep, and more with this sleek smartwatch. Features include GPS, water resistance, and compatibility with both iOS and Android devices.",
+        "producer": "PulseTech",
+        "price": 199.00,
+        "publisher_email": "info@pulsetech.com",
+        "rating": 4.7,
+        "comments": [],
+        "release_date": "2024-03-10"
+      },
+      {
+        "id": "13",
+        "name": "Non-Stick Cookware Set #5",
+        "type": "Home & Kitchen",
+        "cover_image": "https://via.placeholder.com/600x400?text=Non-Stick+Cookware+Set+5",
+        "details": "Durable, scratch-resistant non-stick cookware set includes pots, pans, and lids. Oven safe up to 400°F and dishwasher safe for easy cleaning.",
+        "producer": "ChefMate",
+        "price": 89.99,
+        "publisher_email": "info@chefmate.com",
+        "rating": 4.5,
+        "comments": [
+          {
+            "user": "homechef_amy",
+            "comment": "Cooks evenly and saves so much time. My fries are perfectly crispy!",
+            "date": "2024-04-10"
+          }
+        ],
+        "release_date": "2024-02-25"
+      }
+    ]
+  }
