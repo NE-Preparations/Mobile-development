@@ -8,15 +8,16 @@ Content for React-native mobile app development
 npm install -g expo-cli
 
 # Create a new project
-npx create-expo-app LibraryManagement -t expo-router
+npx create-expo-app LibraryManagement
 cd LibraryManagement
 
 # Install required dependencies
-npm install @react-navigation/native @react-navigation/stack expo-router react-native-gesture-handler 
+<!-- npm install @react-navigation/native @react-navigation/stack expo-router react-native-gesture-handler 
 npm install react-native-safe-area-context react-native-screens nativewind tailwindcss
 npm install axios react-hook-form zod @hookform/resolvers react-native-toast-message @react-native-async-storage/async-storage
 npm install react-native-dotenv
-npm i react-native-toast-message
+npm i react-native-toast-message -->
+npm i nativewind react-native-vector-icons
 
 library-management-app/
 ├── app/                     # Main app directory for Expo Router
