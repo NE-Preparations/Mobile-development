@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Product } from '../types';
+import { Product } from './types';
 
 interface ProductCardProps {
     product: Product;
